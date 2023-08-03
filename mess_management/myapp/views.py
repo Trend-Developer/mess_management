@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from .models import MessUser, Student, StudentMessDetails
+from .models import MessUser, Student, StudentMessDetails, MessMenu, BillModel
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import StudentMessDetails_Serializer
+from datetime import datetime,timedelta
 
 """
 payload username , password , type_of_user
@@ -106,3 +107,53 @@ def view_booked(request, username):
     data = StudentMessDetails.objects.filter(student__username=username)
     seria = StudentMessDetails_Serializer(data, many=True)
     return Response(seria.data)
+
+
+@api_view(["GET"])
+def get_messmenu(request):
+    menu_obj = MessMenu.objects.all()
+    data = []
+    for obj in menu_obj:
+        mess_day = {
+            "day": obj.mess_day,
+            "breakfast": obj.breakfast,
+            "lunch": obj.lunch,
+            "evening": obj.evening,
+            "dinner": obj.dinner,
+        }
+        data.append(mess_day)
+    return Response({"data": data})
+
+
+from datetime import date
+@api_view(["POST"])
+def billing(request):
+    date_format="%y-%m-%d"
+    start_date=datetime.strftime(request.data["start_date"],date_format )# 2023 - 07 -20
+    end_date=datetime.strftime(request.data["end_date"],date_format )# 2023 - 07 -20
+    username=request.data["username"]
+    delta=end_date-start_date
+    total_days=delta.days()
+
+    total_amount=0
+    current_date=start_date
+
+    while current_date <= end_date:
+        user=StudentMessDetails.objects.get(student__username=username,booking_date=current_date)
+        if user.breakfast ==True:
+            total_amount=total_amount+10
+
+        if user.lunch ==True:
+            total_amount=total_amount+10
+
+        if user.dinner ==True:
+            total_amount=total_amount+10
+
+        if user.evening ==True:
+            total_amount=total_amount+10
+        user.payment=True
+        user.save()
+        
+        current_date+=timedelta(days=1)
+    return Response({"success":True,"billed_amount":total_amount})
+

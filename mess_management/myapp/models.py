@@ -27,6 +27,7 @@ class StudentMessDetails(models.Model):
     evening = models.BooleanField(default=False, null=True, blank=True)
     booking_date = models.DateField()
     created_date = models.DateTimeField(auto_now_add=True)
+    payment = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.student.name + "_" + str(self.booking_date)

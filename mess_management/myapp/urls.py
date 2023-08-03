@@ -6,4 +6,6 @@ urlpatterns = [
     path("register_user/", register_user),
     path("book_mess/", book_mess),
     path("view_booked/", view_booked),
+    path("get_messmenu/", get_messmenu),
+    path("billing/", billing),
 ]
