@@ -49,7 +49,7 @@ class Student(models.Model):
 
 
 class StudentMessDetails(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(StudentLogin, on_delete=models.DO_NOTHING)
     breakfast = models.BooleanField(default=False, null=True, blank=True)
     lunch = models.BooleanField(default=False, null=True, blank=True)
     dinner = models.BooleanField(default=False, null=True, blank=True)
