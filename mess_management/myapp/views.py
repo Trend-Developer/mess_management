@@ -2,8 +2,8 @@ from django.shortcuts import render
 from .models import MessUser, Student, StudentMessDetails, MessMenu, BillModel
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import StudentMessDetails_Serializer,StudentRegistrationSerializer
-from datetime import datetime,timedelta
+from .serializers import StudentMessDetails_Serializer, StudentRegistrationSerializer
+from datetime import datetime, timedelta
 from datetime import date
 
 """
@@ -31,7 +31,7 @@ def user_login(request):
     else:
         data = {
             "id": user_obj.id,
-            "name": user_obj.first_name ,
+            "name": user_obj.first_name,
             "username": user_obj.username,
         }
         return Response({"data": data})
@@ -45,7 +45,7 @@ payload -- username , name ,password , cm_password , type_of_user
 @api_view(["POST"])
 def register_messuser(request):
     data = request.data
-    if (MessUser.objects.filter(username=data["username"]).exists()):
+    if MessUser.objects.filter(username=data["username"]).exists():
         return Response({"message": "username already exist", "success": False})
 
     if data["password"] is not data["cm_password"]:
@@ -74,7 +74,7 @@ payload - booking_date,username ,evening ,breakfast , lunch ,dinner
 @api_view(["POST"])
 def book_mess(request):
     data = request.data
-    booking_date =str( data["selectedDate"]).split("T")[0]
+    booking_date = str(data["selectedDate"]).split("T")[0]
     username = data["username"]
 
     student_obj = Student.objects.get(username=username)
@@ -106,57 +106,50 @@ def view_booked(request, username):
 @api_view(["GET"])
 def get_messmenu(request):
     menu_obj = MessMenu.objects.all()
-    days=[obj.mess_day for obj in menu_obj]
-    breakfast=[obj.breakfast for obj in menu_obj]
-    lunch=[obj.lunch for obj in menu_obj]
-    evening=[obj.evening for obj in menu_obj]
-    dinner=[obj.dinner for obj in menu_obj]  
+    days = [obj.mess_day for obj in menu_obj]
+    breakfast = [obj.breakfast for obj in menu_obj]
+    lunch = [obj.lunch for obj in menu_obj]
+    evening = [obj.evening for obj in menu_obj]
+    dinner = [obj.dinner for obj in menu_obj]
     mess_day = {
         "days": days,
         "breakfast": breakfast,
         "lunch": lunch,
         "evening": evening,
-        "dinner":dinner,
+        "dinner": dinner,
     }
     return Response({"data": mess_day})
 
 
 @api_view(["POST"])
 def billing(request):
-    date_format="%y-%m-%d"
-    start_date=datetime.strftime(request.data["start_date"],date_format )# 2023 - 07 -20
-    end_date=datetime.strftime(request.data["end_date"],date_format )# 2023 - 07 -20
-    username=request.data["username"]
-    delta=end_date-start_date
-    total_days=delta.days()
+    month = request.data["month"]
+    year = request.data["year"]
+    username = request.data["username"]
+    start_date = datetime(year, month, 1)  # first of month
+    end_date = datetime(year, month + 1)  # last of month
+    foo_date = StudentMessDetails.objects.filter(
+        student__username=username, booking_date__range=(start_date, end_date)
+    )
+    count = foo_date.count()
+    total_bill = 0
+    for bill in foo_date[0:count-1]:
+        if bill.breakfast:
+            total_bill = total_bill + 10
+        if bill.lunch:
+            total_bill = total_bill + 10
+        if bill.dinner:
+            total_bill = total_bill + 10
+        if bill.evening:
+            total_bill = total_bill + 10
 
-    total_amount=0
-    current_date=start_date
-
-    while current_date <= end_date:
-        user=StudentMessDetails.objects.get(student__username=username,booking_date=current_date)
-        if user.breakfast ==True:
-            total_amount=total_amount+10
-
-        if user.lunch ==True:
-            total_amount=total_amount+10
-
-        if user.dinner ==True:
-            total_amount=total_amount+10
-
-        if user.evening ==True:
-            total_amount=total_amount+10
-        user.payment=True
-        user.save()
-        
-        current_date+=timedelta(days=1)
-    return Response({"success":True,"billed_amount":total_amount})
+    return Response({"success": True, "billed_amount": total_bill})
 
 
 @api_view(["POST"])
 def student_registrations(request):
-    seria=StudentRegistrationSerializer(data=request.data)
+    seria = StudentRegistrationSerializer(data=request.data)
     if seria.is_valid():
         seria.save()
-        return Response({"message":"saved successfully","data":seria.data})
-    return Response({"message":"failed to save","data":seria.errors})
+        return Response({"message": "saved successfully", "data": seria.data})
+    return Response({"message": "failed to save", "data": seria.errors})

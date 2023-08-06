@@ -11,11 +11,17 @@ class MessUser(models.Model):
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=100, null=True, blank=True)
-    lastname = models.CharField(max_length=100, null=True, blank=True)
+    full_name = models.CharField(max_length=100, null=True, blank=True)
+    admission_no = models.IntegerField( null=True, blank=True)
+    department = models.CharField(max_length=100,null=True,blank=True)
     year_of_studey=models.IntegerField(null=True,blank=True)
     email=models.EmailField(null=True,blank=True)
-    phone=models.CharField(max_length=20,null=True,blank=True)
+    student_phone=models.CharField(max_length=20,null=True,blank=True)
+    parent_phone=models.CharField(max_length=20,null=True,blank=True)
+    last_sem_cgpa=models.CharField(max_length=20,null=True,blank=True)
+    sc_st=models.BooleanField(default=False)
+    bpl=models.CharField(max_length=100,null=True,blank=True)
+    handicaped=models.CharField(max_length=100,null=True,blank=True)
     adhar_nu=models.BigIntegerField(null=True,blank=True)
     date_of_birth=models.DateField(null=True,blank=True)
     income=models.IntegerField(null=True,blank=True)
