@@ -34,8 +34,6 @@ class Student(models.Model):
     blood_group=models.CharField(max_length=100,null=True,blank=True)
     distance_from_home=models.CharField(max_length=100,null=True,blank=True)
     address=models.TextField(null=True,blank=True)
-    username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=16)
     image1=models.FileField(null=True,blank=True)
     income_certificate=models.FileField(null=True,blank=True)
     caste_certificate=models.FileField(null=True,blank=True)
