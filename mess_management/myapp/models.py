@@ -31,6 +31,13 @@ class Student(models.Model):
     address=models.TextField(null=True,blank=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=16)
+    image1=models.FileField(null=True,blank=True)
+    income_certificate=models.FileField(null=True,blank=True)
+    caste_certificate=models.FileField(null=True,blank=True)
+    physicaly_handicaped=models.FileField(null=True,blank=True)
+    ration_card=models.FileField(null=True,blank=True)
+    mark_list=models.FileField(null=True,blank=True)
+    uid=models.FileField(null=True,blank=True)
 
     def __str__(self) -> str:
         return self.username
