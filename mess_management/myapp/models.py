@@ -11,7 +11,18 @@ class MessUser(models.Model):
 
 
 class Student(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    lastname = models.CharField(max_length=100, null=True, blank=True)
+    year_of_studey=models.IntegerField(null=True,blank=True)
+    email=models.EmailField(null=True,blank=True)
+    phone=models.CharField(max_length=20,null=True,blank=True)
+    adhar_nu=models.BigIntegerField(null=True,blank=True)
+    date_of_birth=models.DateField(null=True,blank=True)
+    income=models.IntegerField(null=True,blank=True)
+    caste=models.CharField(max_length=100,null=True,blank=True)
+    blood_group=models.CharField(max_length=100,null=True,blank=True)
+    distance_from_home=models.CharField(max_length=100,null=True,blank=True)
+    address=models.TextField(null=True,blank=True)
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=16)
 
@@ -70,3 +81,5 @@ class Cost(models.Model):
 
     def __str__(self) -> str:
         return "Cost"
+
+
