@@ -106,17 +106,19 @@ def view_booked(request, username):
 @api_view(["GET"])
 def get_messmenu(request):
     menu_obj = MessMenu.objects.all()
-    data = []
-    for obj in menu_obj:
-        mess_day = {
-            "day": obj.mess_day,
-            "breakfast": obj.breakfast,
-            "lunch": obj.lunch,
-            "evening": obj.evening,
-            "dinner": obj.dinner,
-        }
-        data.append(mess_day)
-    return Response({"data": data})
+    days=[obj.mess_day for obj in menu_obj]
+    breakfast=[obj.breakfast for obj in menu_obj]
+    lunch=[obj.lunch for obj in menu_obj]
+    evening=[obj.evening for obj in menu_obj]
+    dinner=[obj.dinner for obj in menu_obj]  
+    mess_day = {
+        "days": days,
+        "breakfast": breakfast,
+        "lunch": lunch,
+        "evening": evening,
+        "dinner":dinner,
+    }
+    return Response({"data": mess_day})
 
 
 @api_view(["POST"])
