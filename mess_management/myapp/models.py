@@ -82,7 +82,7 @@ class MessMenu(models.Model):
 
 
 class BillModel(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(StudentLogin, on_delete=models.DO_NOTHING)
     amount = models.DecimalField(max_digits=7, decimal_places=2)
     billed_date = models.DateField()
     is_paid = models.BooleanField(default=False)

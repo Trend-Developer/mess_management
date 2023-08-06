@@ -80,7 +80,7 @@ def book_mess(request):
     if StudentMessDetails.objects.filter(
         booking_date=booking_date, student=student_obj
     ).exists():
-        return Response({"message": "already booked", "success": False})
+        return Response({"message": "messcut details successfully saved", "success": False})
 
     else:
         details_obj = StudentMessDetails.objects.create(
