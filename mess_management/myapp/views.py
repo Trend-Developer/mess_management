@@ -127,7 +127,7 @@ def billing(request):
     year = int(request.data["year"])
     username = request.data["username"]
     start_date = datetime(year, month, 1)  # first of month
-    end_date = datetime(year, month + 1)  # last of month
+    end_date = datetime(year, month + 1,1)  # last of month
     foo_date = StudentMessDetails.objects.filter(
         student__username=username, booking_date__range=(start_date, end_date)
     )
