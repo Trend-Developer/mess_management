@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import MessUser, Student, StudentMessDetails, MessMenu, BillModel
+from .models import MessUser, Student, StudentMessDetails, MessMenu, BillModel,StudentLogin
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import StudentMessDetails_Serializer, StudentRegistrationSerializer
@@ -15,7 +15,7 @@ payload username , password , type_of_user
 def user_login(request):
     username = request.data["username"]
     password = request.data["password"]
-    data_model = Student
+    data_model = StudentLogin
     # if request.data["type_of_user"] == "mess_user":
     #     data_model = MessUser
     # else:
@@ -31,7 +31,6 @@ def user_login(request):
     else:
         data = {
             "id": user_obj.id,
-            "name": user_obj.first_name,
             "username": user_obj.username,
         }
         return Response({"data": data})

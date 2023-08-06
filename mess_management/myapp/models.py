@@ -10,6 +10,11 @@ class MessUser(models.Model):
         return self.username
 
 
+class StudentLogin(models.Model):
+    username=models.CharField(max_length=100,null=True,blank=True)
+    password=models.CharField(max_length=100,null=True,blank=True)
+
+
 class Student(models.Model):
     full_name = models.CharField(max_length=100, null=True, blank=True)
     admission_no = models.IntegerField( null=True, blank=True)
