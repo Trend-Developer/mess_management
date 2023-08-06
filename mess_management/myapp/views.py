@@ -15,11 +15,11 @@ payload username , password , type_of_user
 def user_login(request):
     username = request.data["username"]
     password = request.data["password"]
-    data_model = None
-    if request.data["type_of_user"] == "mess_user":
-        data_model = MessUser
-    else:
-        data_model = Student
+    data_model = Student
+    # if request.data["type_of_user"] == "mess_user":
+    #     data_model = MessUser
+    # else:
+    #     data_model = Student
 
     if not data_model.objects.filter(username=username).exists():
         return Response({"message": "user not found"})
@@ -31,7 +31,7 @@ def user_login(request):
     else:
         data = {
             "id": user_obj.id,
-            "name": user_obj.first_name if data_model == Student else user_obj.name,
+            "name": user_obj.first_name ,
             "username": user_obj.username,
         }
         return Response({"data": data})
