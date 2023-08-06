@@ -123,8 +123,8 @@ def get_messmenu(request):
 
 @api_view(["POST"])
 def billing(request):
-    month = request.data["month"]
-    year = request.data["year"]
+    month = int(request.data["month"])
+    year = int(request.data["year"])
     username = request.data["username"]
     start_date = datetime(year, month, 1)  # first of month
     end_date = datetime(year, month + 1)  # last of month
@@ -132,6 +132,8 @@ def billing(request):
         student__username=username, booking_date__range=(start_date, end_date)
     )
     count = foo_date.count()
+    if count<=0:
+        return Response({"success": True, "billed_amount": 0})
     total_bill = 0
     for bill in foo_date[0:count-1]:
         if bill.breakfast:
