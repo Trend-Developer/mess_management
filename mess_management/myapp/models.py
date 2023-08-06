@@ -13,6 +13,8 @@ class MessUser(models.Model):
 class StudentLogin(models.Model):
     username=models.CharField(max_length=100,null=True,blank=True)
     password=models.CharField(max_length=100,null=True,blank=True)
+    def __str__(self) -> str:
+        return self.username
 
 
 class Student(models.Model):
