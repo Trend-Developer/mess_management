@@ -76,7 +76,7 @@ def book_mess(request):
     booking_date = str(data["selectedDate"]).split("T")[0]
     username = data["username"]
 
-    student_obj = Student.objects.get(username=username)
+    student_obj = StudentLogin.objects.get(username=username)
     if StudentMessDetails.objects.filter(
         booking_date=booking_date, student=student_obj
     ).exists():
