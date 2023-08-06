@@ -8,4 +8,5 @@ urlpatterns = [
     path("view_booked/", view_booked),
     path("get_messmenu/", get_messmenu),
     path("billing/", billing),
+    path("stud_reg/",student_registrations)
 ]
